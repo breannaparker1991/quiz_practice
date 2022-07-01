@@ -1,4 +1,5 @@
 from string import ascii_lowercase
+import random
 
 
 name = input("what's your name?")
@@ -22,7 +23,8 @@ for question, correct_answer in QUESTIONS:
     print("Correct!")
   else:
     print(f"The answer is {correct_answer!r}, not {answer!r}")
-    
+
+NUM_QUESTIONS_PER_QUIZ = 5   
 QUESTIONS2 = {
   "What's the purpose of the built-in zip() function": [
         "To iterate over two or more sequences at the same time",
@@ -34,12 +36,15 @@ QUESTIONS2 = {
         "Timsort", "Quicksort", "Merge sort", "Bubble sort"
     ],
 }
+num_questions = min(NUM_QUESTIONS_PER_QUIZ, len(QUESTIONS2))
+questions = random.sample(list(QUESTIONS2.items()), k=num_questions)
+
 num_correct = 0
-for num, (question, alternatives) in enumerate (QUESTIONS2.items(), start =1):
+for num, (question, alternatives) in enumerate (questions, start =1):
   print(f"\nQuestion {num}:")
   print(f"{question}?")
   correct_answer = alternatives[0]
-  labeled_alternatives = dict(zip(ascii_lowercase, sorted(alternatives)))
+  labeled_alternatives = dict(zip(ascii_lowercase, random.sample(alternatives, k = len(alternatives))))
   for label, alternative in labeled_alternatives.items():
     print(f" {label} {alternative}")
   while (answer_label := input("\nChoice?")) not in labeled_alternatives:
