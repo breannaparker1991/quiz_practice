@@ -1,6 +1,4 @@
-from asyncore import write
-import enum
-from webbrowser import get
+from string import ascii_lowercase
 
 
 name = input("what's your name?")
@@ -36,14 +34,22 @@ QUESTIONS2 = {
         "Timsort", "Quicksort", "Merge sort", "Bubble sort"
     ],
 }
-for question, alternatives in QUESTIONS2.items():
+num_correct = 0
+for num, (question, alternatives) in enumerate (QUESTIONS2.items(), start =1):
+  print(f"\nQuestion {num}:")
+  print(f"{question}?")
   correct_answer = alternatives[0]
-  sorted_alternatives = sorted(alternatives)
-  for label, alternative in enumerate(sorted_alternatives):
+  labeled_alternatives = dict(zip(ascii_lowercase, sorted(alternatives)))
+  for label, alternative in labeled_alternatives.items():
     print(f" {label} {alternative}")
-  answer_label = int(input(f"{question}?"))
-  answer = sorted_alternatives[answer_label]
+  while (answer_label := input("\nChoice?")) not in labeled_alternatives:
+    print(f"Please answer one of {',' .join(labeled_alternatives)}")
+
+  answer = labeled_alternatives[answer_label]
   if answer == correct_answer:
-    print ("Correct!")
+    num_correct += 1
+    print ("⭐Correct!⭐")
   else:
     print(f"the answer is {correct_answer!r} not {answer!r}")
+
+print(f"\nYou got {num_correct} correct out of {num} questions")
